@@ -38,21 +38,21 @@ function Register() {
       name: "",
       email: "",
       password: "",
-      consfirmpassword: "",
+      confirmpassword: "",
     },
     validationSchema: yup.object({
-      name: yup.string().strict().trim().required("this field required"),
+      name: yup.string().strict().trim().required("This field required"),
       email: yup
         .string()
         .email("Enter valid email id")
         .strict()
         .trim()
-        .required("this field required"),
-      password: yup.string().strict().trim().required("this field required"),
+        .required("This field required"),
+      password: yup.string().strict().trim().required("This field required"),
       confirmpassword: yup
         .string()
         .oneOf([yup.ref("password"), null, "must be same"])
-        .required("this field is required"),
+        .required("This field is required"),
     }),
 
     onSubmit: (data) => {
@@ -66,9 +66,9 @@ function Register() {
         .catch((err) => {
           toast.error(err.response.data);
         });
-      // toast.success("Success Notification!", {
-      //   position: toast.POSITION.TOP_CENTER,
-      // });
+      toast.success("Success Notification!", {
+        position: toast.POSITION.TOP_CENTER,
+      });
     },
   });
   return (
@@ -81,154 +81,157 @@ function Register() {
 
             <Grid container className={classes.grid_reg}>
               <Grid xs={10} className={classes.grid_form_field}>
-                <ReusableInput
-                  placeholder="Full name"
-                  type="text"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment>
-                        <IconButton>
-                          <PersonOutlineIcon
-                            style={{
-                              borderRight: "1px solid #f6f9fb",
-                              padding: 4,
-                              marginRight: 10,
-                              color: "#ced4da",
-                            }}
-                          />
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                    style: {
-                      height: 32,
-                      padding: 0,
-                    },
-                  }}
-                  name="name"
-                  id="name"
-                  value={formik.name}
-                  onChange={formik.handleChange}
-                />
-                <br />
-                {formik.errors.name ? (
-                  <div style={{ color: "red", fontSize: "12px" }}>
-                    {formik.errors.name}
-                  </div>
-                ) : null}
-                <br /> <br />
-                <ReusableInput
-                  placeholder="Email"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment>
-                        <IconButton>
-                          <MailOutlineIcon
-                            style={{
-                              borderRight: "1px solid #f6f9fb",
-                              padding: 4,
-                              marginRight: 10,
-                              color: "#ced4da",
-                            }}
-                          />
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                    style: {
-                      height: 32,
-                      padding: 0,
-                    },
-                  }}
-                  type="email"
-                  name="email"
-                  id="email"
-                  value={formik.email}
-                  onChange={formik.handleChange}
-                />
-                <br />
-                {formik.errors.email ? (
-                  <div style={{ color: "red", fontSize: "12px" }}>
-                    {formik.errors.email}
-                  </div>
-                ) : null}
-                <br /> <br />
-                <ReusableInput
-                  placeholder="Password"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment>
-                        <IconButton>
-                          <LockOpenIcon
-                            style={{
-                              borderRight: "1px solid #f6f9fb",
-                              padding: 4,
-                              marginRight: 10,
-                              color: "#ced4da",
-                            }}
-                          />
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                    style: {
-                      height: 32,
-                      padding: 0,
-                    },
-                  }}
-                  type="password"
-                  name="password"
-                  id="password"
-                  value={formik.password}
-                  onChange={formik.handleChange}
-                />
-                <br />
-                {formik.errors.password ? (
-                  <div style={{ color: "red", fontSize: "12px" }}>
-                    {formik.errors.password}
-                  </div>
-                ) : null}
-                <br /> <br />
-                <ReusableInput
-                  placeholder="Retype password"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment>
-                        <IconButton>
-                          <LockOpenIcon
-                            style={{
-                              borderRight: "1px solid #f6f9fb",
-                              padding: 4,
-                              marginRight: 10,
-                              color: "#ced4da",
-                            }}
-                          />
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                    style: {
-                      height: 32,
-                      padding: 0,
-                    },
-                  }}
-                  type="password"
-                  name="confirmpassword"
-                  id="confirmpassword"
-                  value={formik.confirmpassword}
-                  onChange={formik.handleChange}
-                />
-                <br />
-                {formik.errors.confirmpassword ? (
-                  <div style={{ color: "red", fontSize: "12px" }}>
-                    {formik.errors.confirmpassword}
-                  </div>
-                ) : null}
-                <br /> <br />
-                <Checkbox className={classes.check} />
-                <label className={classes.agree_label}>
-                  I agree to the{" "}
-                  <a href="#" className={classes.terms}>
-                    Terms
-                  </a>
-                </label>
-                <ResuasbleButton>Register</ResuasbleButton>
+                <form onSubmit={formik.handleSubmit} noValidate>
+                  <ReusableInput
+                    placeholder="Full name"
+                    type="text"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <IconButton>
+                            <PersonOutlineIcon
+                              style={{
+                                borderRight: "1px solid #f6f9fb",
+                                padding: 4,
+                                marginRight: 10,
+                                color: "#ced4da",
+                              }}
+                            />
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                      style: {
+                        height: 32,
+                        padding: 0,
+                      },
+                    }}
+                    name="name"
+                    id="name"
+                    value={formik.name}
+                    onChange={formik.handleChange}
+                  />
+                  <br />
+                  {formik.errors.name ? (
+                    <div style={{ color: "red", fontSize: "12px" }}>
+                      {formik.errors.name}
+                    </div>
+                  ) : null}
+                  <br />
+                  <ReusableInput
+                    placeholder="Email"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <IconButton>
+                            <MailOutlineIcon
+                              style={{
+                                borderRight: "1px solid #f6f9fb",
+                                padding: 4,
+                                marginRight: 10,
+                                color: "#ced4da",
+                              }}
+                            />
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                      style: {
+                        height: 32,
+                        padding: 0,
+                      },
+                    }}
+                    type="email"
+                    name="email"
+                    id="email"
+                    value={formik.email}
+                    onChange={formik.handleChange}
+                  />
+                  <br />
+                  {formik.errors.email ? (
+                    <div style={{ color: "red", fontSize: "12px" }}>
+                      {formik.errors.email}
+                    </div>
+                  ) : null}
+                  <br />
+                  <ReusableInput
+                    placeholder="Password"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <IconButton>
+                            <LockOpenIcon
+                              style={{
+                                borderRight: "1px solid #f6f9fb",
+                                padding: 4,
+                                marginRight: 10,
+                                color: "#ced4da",
+                              }}
+                            />
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                      style: {
+                        height: 32,
+                        padding: 0,
+                      },
+                    }}
+                    type="password"
+                    name="password"
+                    id="password"
+                    value={formik.password}
+                    onChange={formik.handleChange}
+                  />
+                  <br />
+                  {formik.errors.password ? (
+                    <div style={{ color: "red", fontSize: "12px" }}>
+                      {formik.errors.password}
+                    </div>
+                  ) : null}
+                  <br />
+                  <ReusableInput
+                    placeholder="Retype password"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <IconButton>
+                            <LockOpenIcon
+                              style={{
+                                borderRight: "1px solid #f6f9fb",
+                                padding: 4,
+                                marginRight: 10,
+                                color: "#ced4da",
+                              }}
+                            />
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                      style: {
+                        height: 32,
+                        padding: 0,
+                      },
+                    }}
+                    type="password"
+                    name="confirmpassword"
+                    id="confirmpassword"
+                    value={formik.confirmpassword}
+                    onChange={formik.handleChange}
+                  />
+                  <br />
+                  {formik.errors.confirmpassword ? (
+                    <div style={{ color: "red", fontSize: "12px" }}>
+                      {formik.errors.confirmpassword}
+                    </div>
+                  ) : null}
+
+                  <br />
+                  <Checkbox className={classes.check} />
+                  <label className={classes.agree_label}>
+                    I agree to the{" "}
+                    <a href="#" className={classes.terms}>
+                      Terms
+                    </a>
+                  </label>
+                  <ResuasbleButton type="submit">Register</ResuasbleButton>
+                </form>
                 <p className={classes.already_p}>
                   Already have an account?{" "}
                   <Link to="/login" className={classes.signin_ref}>
@@ -236,31 +239,7 @@ function Register() {
                   </Link>
                 </p>
                 <p className={classes.already_p}>- Register With -</p>
-                <Grid
-                  container
-                  className={classes.flex_icon_div}
-                  //   style={{ flexWrap: "wrap" }}
-                >
-                  {/* <Grid xs={4}>
-                    <Grid container className={classes.flex_icon_div}>
-                      <Grid xs={4}>
-                        <div className={classes.facebookIconDiv}>
-                          <FaFacebookF className={classes.facebookIcon} />
-                        </div>
-                      </Grid>
-                      <Grid xs={4}>
-                        <div className={classes.twitterIconDiv}>
-                          <AiOutlineTwitter className={classes.twitterIcon} />
-                        </div>
-                      </Grid>
-                      <Grid xs={4}>
-                        <div className={classes.instaIconDiv}>
-                          <AiOutlineInstagram className={classes.instaIcon} />
-                        </div>
-                      </Grid>
-                    </Grid>
-                  </Grid> */}
-                </Grid>
+                <Grid container className={classes.flex_icon_div}></Grid>
                 <div className={classes.flex_icon_div}>
                   <div className={classes.facebookIconDiv}>
                     <FaFacebookF className={classes.facebookIcon} />

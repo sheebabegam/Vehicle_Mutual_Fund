@@ -12,7 +12,7 @@ import TextField from "@mui/material/TextField";
 
 function ResuasbleButton(props) {
   const classes = useStyles();
-  const { children, onClick } = props;
+  const { children, onClick, style } = props;
 
   return (
     <div className={classes.reg_div}>
@@ -21,6 +21,7 @@ function ResuasbleButton(props) {
         variant="contained"
         onClick={onClick}
         className={classes.button}
+        style={style}
       >
         {children}
       </Button>
