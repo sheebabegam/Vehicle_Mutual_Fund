@@ -264,7 +264,7 @@ const useStyles = makeStyles({
   reg_div: {
     backgroundColor: "whitesmoke",
     // width: "100vw",
-    height: "100vh",
+    height: "93vh",
   },
   grid_center: {
     display: "flex",

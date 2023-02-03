@@ -39,6 +39,7 @@ function Register() {
       email: "",
       password: "",
       confirmpassword: "",
+      role: "",
     },
     validationSchema: yup.object({
       name: yup.string().strict().trim().required("This field required"),
@@ -53,6 +54,7 @@ function Register() {
         .string()
         .oneOf([yup.ref("password"), null, "must be same"])
         .required("This field is required"),
+      role: yup.string().strict().trim().required("This field required"),
     }),
 
     onSubmit: (data) => {
@@ -222,6 +224,26 @@ function Register() {
                     </div>
                   ) : null}
 
+                  <br />
+
+                  <select
+                    label="Role"
+                    value={formik.role}
+                    onChange={formik.handleChange}
+                    name="role"
+                    id="role"
+                    className={classes.select_box}
+                  >
+                    <option value="">Role</option>
+                    <option value="admin">Admin</option>
+                    <option value="user">User</option>
+                  </select>
+                  <br />
+                  {formik.errors.role ? (
+                    <div style={{ color: "red", fontSize: "12px" }}>
+                      {formik.errors.role}
+                    </div>
+                  ) : null}
                   <br />
                   <Checkbox className={classes.check} />
                   <label className={classes.agree_label}>
@@ -399,6 +421,17 @@ const useStyles = makeStyles({
     flexWrap: "wrap !important",
     gap: 10,
     // height: 200,
+  },
+  select_box: {
+    width: "100%",
+    margin: 0,
+    border: "1px solid #f6f9fb",
+    padding: "10px 0px",
+    outline: "none",
+    "&::placeholder": {
+      textOverflow: "ellipsis !important",
+      color: "blue",
+    },
   },
   check: {
     // "&:hover": {

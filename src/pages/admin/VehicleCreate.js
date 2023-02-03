@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@mui/styles";
 import ReusableInput from "../../components/ReusableInput";
 import ResuasbleButton from "../../components/ReusableButton";
@@ -16,33 +16,33 @@ function VehicleCreate() {
   const formik = useFormik({
     initialValues: {
       name: "",
-      category: "",
-      duration: "",
-      percentage: "",
-      minimumdeposit: "",
+      price: "",
+      model: "",
+      year: "",
+      color: "",
+      engine: "",
+      cc: "",
+      planid: "",
+      // userid: "",
     },
     validationSchema: yup.object({
       name: yup.string().strict().trim().required("Name is required"),
-      category: yup.string().strict().trim().required("Category is required"),
-      duration: yup.string().strict().trim().required("Duration is required"),
-      percentage: yup
-        .string()
-        .strict()
-        .trim()
-        .required("Percentage is required"),
-      minimumdeposit: yup
-        .string()
-        .strict()
-        .trim()
-        .required("Minimum deposit is required"),
+      price: yup.string().strict().trim().required("price is required"),
+      model: yup.string().strict().trim().required("model is required"),
+      year: yup.string().strict().trim().required("year is required"),
+      color: yup.string().strict().trim().required("color is required"),
+      engine: yup.string().strict().trim().required("engine is required"),
+      cc: yup.string().strict().trim().required("cc is required"),
+      planid: yup.string().strict().trim().required("planid is required"),
+      // userid: yup.string().strict().trim().required("userid is required"),
     }),
 
     onSubmit: (data) => {
       console.log(data);
       axios
-        .post("http://localhost:5000/api/auth/createPlan", data)
+        .post("http://localhost:5000/api/auth/vehicleCreate", data)
         .then((res) => {
-          toast.success("User plan created successfully!");
+          toast.success("Vehicle plan is created successfully!");
         })
         .catch((err) => {
           toast.error(err.response.data);
@@ -52,29 +52,34 @@ function VehicleCreate() {
       });
     },
   });
+
+  const user = JSON.parse(localStorage.getItem("auth"));
+  console.log("User ID is", user.id);
+
+  const [json, setJson] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/api/auth/listPlan", {
+        headers: { auth: `${JSON.parse(localStorage.getItem("auth"))}` },
+      })
+      .then((res) => {
+        console.log(res); // Here we get the token in data
+        setJson(res.data);
+      })
+      .catch((err) => {
+        // toast.error(err.response.data);
+      });
+  }, []);
+
+  console.log("All Plan ID", json.Data);
+
   return (
     <div className={classes.reg_div}>
-      <div className={classes.flex_nav_logout}>
-        <div>
-          <ResuasbleButton
-            onClick={() => {
-              localStorage.clear();
-              navigate("/login");
-            }}
-            style={{
-              backgroundColor: "#4267B2 !important",
-              color: "white",
-              fontWeight: 700,
-            }}
-          >
-            Logout
-          </ResuasbleButton>
-        </div>
-      </div>
       <Grid container className={classes.grid_center}>
         <Grid xs={3.5} className={classes.reg_form_color}>
           <div style={{ width: "100%", paddingTop: "25px" }}>
-            <h2 className={classes.heading_h2}>Create User Plan</h2>
+            <h2 className={classes.heading_h2}>Create Vehicle Plan</h2>
 
             <Grid container className={classes.grid_reg}>
               <Grid xs={10} className={classes.grid_form_field}>
@@ -94,29 +99,114 @@ function VehicleCreate() {
                     </div>
                   ) : null}
                   <br />
+
                   <ReusableInput
-                    placeholder="Category"
+                    placeholder="Price"
                     type="text"
-                    name="category"
-                    id="category"
-                    value={formik.category}
+                    name="price"
+                    id="price"
+                    value={formik.price}
                     onChange={formik.handleChange}
                   />
                   <br />
-                  {formik.errors.category ? (
+                  {formik.errors.price ? (
                     <div style={{ color: "red", fontSize: "12px" }}>
-                      {formik.errors.category}
+                      {formik.errors.price}
                     </div>
                   ) : null}
                   <br />
+
                   <ReusableInput
-                    placeholder="Duration"
+                    placeholder="Model"
                     type="text"
-                    name="duration"
-                    id="duration"
-                    value={formik.duration}
+                    name="model"
+                    id="model"
+                    value={formik.model}
                     onChange={formik.handleChange}
                   />
+                  <br />
+                  {formik.errors.model ? (
+                    <div style={{ color: "red", fontSize: "12px" }}>
+                      {formik.errors.model}
+                    </div>
+                  ) : null}
+                  <br />
+
+                  <ReusableInput
+                    placeholder="Year"
+                    type="text"
+                    name="year"
+                    id="year"
+                    value={formik.year}
+                    onChange={formik.handleChange}
+                  />
+                  <br />
+                  {formik.errors.year ? (
+                    <div style={{ color: "red", fontSize: "12px" }}>
+                      {formik.errors.year}
+                    </div>
+                  ) : null}
+                  <br />
+
+                  <ReusableInput
+                    placeholder="Color"
+                    type="text"
+                    name="color"
+                    id="color"
+                    value={formik.color}
+                    onChange={formik.handleChange}
+                  />
+                  <br />
+                  {formik.errors.color ? (
+                    <div style={{ color: "red", fontSize: "12px" }}>
+                      {formik.errors.color}
+                    </div>
+                  ) : null}
+                  <br />
+
+                  <ReusableInput
+                    placeholder="Engine"
+                    type="text"
+                    name="engine"
+                    id="engine"
+                    value={formik.engine}
+                    onChange={formik.handleChange}
+                  />
+                  <br />
+                  {formik.errors.engine ? (
+                    <div style={{ color: "red", fontSize: "12px" }}>
+                      {formik.errors.engine}
+                    </div>
+                  ) : null}
+                  <br />
+
+                  <ReusableInput
+                    placeholder="CC"
+                    type="text"
+                    name="cc"
+                    id="cc"
+                    value={formik.cc}
+                    onChange={formik.handleChange}
+                  />
+                  <br />
+                  {formik.errors.cc ? (
+                    <div style={{ color: "red", fontSize: "12px" }}>
+                      {formik.errors.cc}
+                    </div>
+                  ) : null}
+                  <br />
+
+                  <select
+                    name="planid"
+                    id="planid"
+                    value={formik.planid}
+                    onChange={formik.handleChange}
+                    className={classes.select_box}
+                  >
+                    {json?.Data?.map((ids, i) => (
+                      <option value={ids._id}>{ids.name}</option>
+                    ))}
+                  </select>
                   <br />
                   {formik.errors.duration ? (
                     <div style={{ color: "red", fontSize: "12px" }}>
@@ -124,38 +214,25 @@ function VehicleCreate() {
                     </div>
                   ) : null}
                   <br />
-                  <ReusableInput
-                    placeholder="Percentage"
-                    type="percentage"
-                    name="percentage"
-                    id="percentage"
-                    value={formik.percentage}
+
+                  {/* <ReusableInput
+                    placeholder="Userid"
+                    type="text"
+                    name="userid"
+                    id="userid"
+                    value={user.id}
                     onChange={formik.handleChange}
                   />
                   <br />
-                  {formik.errors.percentage ? (
+                  {formik.errors.userid ? (
                     <div style={{ color: "red", fontSize: "12px" }}>
-                      {formik.errors.percentage}
+                      {formik.errors.userid}
                     </div>
                   ) : null}
-                  <br />
-                  <ReusableInput
-                    placeholder="Minimum Deposit"
-                    type="minimumdeposit"
-                    name="minimumdeposit"
-                    id="minimumdeposit"
-                    value={formik.minimumdeposit}
-                    onChange={formik.handleChange}
-                  />
-                  <br />
-                  {formik.errors.minimumdeposit ? (
-                    <div style={{ color: "red", fontSize: "12px" }}>
-                      {formik.errors.minimumdeposit}
-                    </div>
-                  ) : null}
-                  <br />
+                  <br /> */}
+
                   <ResuasbleButton type="submit" style={{ fontWeight: 500 }}>
-                    Create Plan
+                    Create Vehicle Plan
                   </ResuasbleButton>
                 </form>
               </Grid>
@@ -172,15 +249,15 @@ export default VehicleCreate;
 const useStyles = makeStyles({
   reg_div: {
     backgroundColor: "whitesmoke",
-    width: "100vw",
-    height: "100vh",
+    // width: "100vw",
+    height: "93vh",
   },
   grid_center: {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    top: "50% !important",
-    transform: "translate(0, 30%)",
+    // top: "50% !important",
+    transform: "translate(0, 6%)",
   },
   reg_form_color: {
     backgroundColor: "white",
@@ -309,6 +386,25 @@ const useStyles = makeStyles({
     justifyContent: "flex-end",
     backgroundColor: "#4267B2",
     padding: 20,
+  },
+  input_box: {
+    width: "100%",
+    margin: 0,
+    border: "1px solid #f6f9fb",
+    "&::placeholder": {
+      textOverflow: "ellipsis !important",
+      color: "blue",
+    },
+  },
+  select_box: {
+    width: "100%",
+    margin: 0,
+    border: "1px solid #f6f9fb",
+    padding: "10px 0px",
+    "&::placeholder": {
+      textOverflow: "ellipsis !important",
+      color: "blue",
+    },
   },
   check: {
     // "&:hover": {
