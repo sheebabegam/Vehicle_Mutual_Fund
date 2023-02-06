@@ -40,7 +40,7 @@ function VehicleCreate() {
     onSubmit: (data) => {
       console.log(data);
       axios
-        .post("http://localhost:5000/api/auth/vehicleCreate", data)
+        .post("http://192.168.7.49:3500/api/auth/vehicleCreate", data)
         .then((res) => {
           toast.success("Vehicle plan is created successfully!");
         })
@@ -60,7 +60,7 @@ function VehicleCreate() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/auth/listPlan", {
+      .get("http://192.168.7.49:3500/api/auth/planlist", {
         headers: { auth: `${JSON.parse(localStorage.getItem("auth"))}` },
       })
       .then((res) => {
@@ -72,7 +72,11 @@ function VehicleCreate() {
       });
   }, []);
 
-  console.log("All Plan ID", json.Data);
+  console.log("All Plan ID", json);
+
+  json?.map((users, i) => {
+    console.log("USERS are", users._id);
+  });
 
   return (
     <div className={classes.reg_div}>
@@ -203,7 +207,7 @@ function VehicleCreate() {
                     onChange={formik.handleChange}
                     className={classes.select_box}
                   >
-                    {json?.Data?.map((ids, i) => (
+                    {json?.map((ids, i) => (
                       <option value={ids._id}>{ids.name}</option>
                     ))}
                   </select>
@@ -422,3 +426,16 @@ const useStyles = makeStyles({
     // },
   },
 });
+
+// ***********************************************************
+
+// {
+// "name": "Honda",
+// "price": 90000,
+// "model": "Activa 6G",
+// "year": 2020,
+// "color": "Decent Blue",
+// "engine": "57464568565656",
+// "cc": "120",
+// "planid": "efae6f3b-52bf-4b05-b334-b8908df0d55c",
+// }

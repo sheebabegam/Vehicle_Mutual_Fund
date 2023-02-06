@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@mui/styles";
 import ReusableInput from "../../components/ReusableInput";
 import ResuasbleButton from "../../components/ReusableButton";
@@ -10,40 +10,33 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import Grid from "@mui/system/Unstable_Grid";
 
-function PlanCreate() {
+function Deposit() {
   const classes = useStyles();
   const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
-      name: "",
-      category: "",
-      duration: "",
-      percentage: "",
-      minimumdeposit: "",
+      userid: "",
+      planid: "",
+      vehicleid: "",
+      deposit: "",
     },
     validationSchema: yup.object({
-      name: yup.string().strict().trim().required("Name is required"),
-      category: yup.string().strict().trim().required("Category is required"),
-      duration: yup.string().strict().trim().required("Duration is required"),
-      percentage: yup
+      userid: yup.string().strict().trim().required("User ID is required"),
+      planid: yup.string().strict().trim().required("Plan ID is required"),
+      vehicleid: yup
         .string()
         .strict()
         .trim()
-        .required("Percentage is required"),
-      minimumdeposit: yup
-        .string()
-        .strict()
-        .trim()
-        .required("Minimum deposit is required"),
+        .required("Vehicle ID is required"),
+      deposit: yup.string().strict().trim().required("Deposit is required"),
     }),
 
     onSubmit: (data) => {
-      console.log(data);
+      console.log("DEposi Data", data);
       axios
-        // .post("http://localhost:3500/api/auth/createPlan", data)
-        .post("http://192.168.7.49:3500/api/auth/createPlan", data)
+        .post("http://192.168.7.49:3500/api/auth/depositAmount", data)
         .then((res) => {
-          toast.success("User plan created successfully!");
+          toast.success("Deposit plan is created successfully!");
         })
         .catch((err) => {
           toast.error(err.response.data);
@@ -53,171 +46,133 @@ function PlanCreate() {
       });
     },
   });
+
+  const user = JSON.parse(localStorage.getItem("auth"));
+  console.log("User ID is", user.id);
+
+  //   const [userids, setUserids] = useState([]);
+  const [planids, setPlanids] = useState([]);
+  const [vehicleids, setVehicleids] = useState([]);
+
+  // const user = JSON.parse(localStorage.getItem("auth"));
+  // console.log("Role is", user_id);
+
+  useEffect(() => {
+    // userID
+    axios
+      .get("http://192.168.7.49:3500/api/auth/planlist", {
+        headers: { auth: `${JSON.parse(localStorage.getItem("auth"))}` },
+      })
+      .then((res) => {
+        console.log(res); // Here we get the token in data
+        setPlanids(res.data);
+      })
+      .catch((err) => {
+        // toast.error(err.response.data);
+      });
+  }, []);
+
+  console.log("Plan ID", planids);
+
+  useEffect(() => {
+    // vehicleID
+    axios
+      .get("http://192.168.7.49:3500/api/auth/getAllVehicle", {
+        headers: { auth: `${JSON.parse(localStorage.getItem("auth"))}` },
+      })
+      .then((res) => {
+        console.log(res); // Here we get the token in data
+        setVehicleids(res.data);
+      })
+      .catch((err) => {
+        // toast.error(err.response.data);
+      });
+  }, []);
+
+  console.log("Vehicle ID", vehicleids);
+
   return (
     <div className={classes.reg_div}>
       <Grid container className={classes.grid_center}>
         <Grid xs={3.5} className={classes.reg_form_color}>
           <div style={{ width: "100%", paddingTop: "25px" }}>
-            <h2 className={classes.heading_h2}>Create User Plan</h2>
+            <h2 className={classes.heading_h2}>Create Vehicle Plan</h2>
 
             <Grid container className={classes.grid_reg}>
               <Grid xs={10} className={classes.grid_form_field}>
                 <form onSubmit={formik.handleSubmit} noValidate>
-                  <select
-                    label="Name"
-                    value={formik.name}
-                    onChange={formik.handleChange}
-                    type="text"
-                    name="name"
-                    id="name"
-                    className={classes.select_box}
-                  >
-                    <option value="">Name</option>
-                    <option value="honda">Honda</option>
-                    <option value="hero">Hero</option>
-                    <option value="tvs">TVS</option>
-                    <option value="bajaj">Bajaj</option>
-                    <option value="royal_enfield">Royal Enfield</option>
-                  </select>
-                  <br />
-                  {formik.errors.name ? (
-                    <div style={{ color: "red", fontSize: "12px" }}>
-                      {formik.errors.name}
-                    </div>
-                  ) : null}
-
-                  <br />
                   <ReusableInput
-                    placeholder="Category"
+                    // placeholder="Deposit Amount"
                     type="text"
-                    name="category"
-                    id="category"
-                    value={formik.category}
+                    name="userid"
+                    id="userid"
+                    value={formik.userid}
                     onChange={formik.handleChange}
                   />
                   <br />
-                  {formik.errors.category ? (
+                  {formik.errors.userid ? (
                     <div style={{ color: "red", fontSize: "12px" }}>
-                      {formik.errors.category}
-                    </div>
-                  ) : null}
-                  <br />
-                  <select
-                    name="duration"
-                    id="duration"
-                    value={formik.duration}
-                    onChange={formik.handleChange}
-                    className={classes.select_box}
-                  >
-                    <option value="">Duration</option>
-                    <option value={6}> 06 months</option>
-                    <option value={12}>12 months</option>
-                    <option value={18}>18 months</option>
-                    <option value={24}>24 months</option>
-                    <option value={30}>30 months</option>
-                    <option value={36}>36 months</option>
-                    <option value={42}>42 months</option>
-                    <option value={48}>48 months</option>
-                    <option value={54}>54 months</option>
-                    <option value={60}>60 months</option>
-                  </select>
-                  <br />
-                  {formik.errors.duration ? (
-                    <div style={{ color: "red", fontSize: "12px" }}>
-                      {formik.errors.duration}
-                    </div>
-                  ) : null}
-                  {/* <ReusableInput
-                    placeholder="Duration"
-                    type="text"
-                    name="duration"
-                    id="duration"
-                    value={formik.duration}
-                    onChange={formik.handleChange}
-                  />
-                  <br />
-                  {formik.errors.duration ? (
-                    <div style={{ color: "red", fontSize: "12px" }}>
-                      {formik.errors.duration}
-                    </div>
-                  ) : null} */}
-                  <br />
-
-                  <select
-                    name="percentage"
-                    id="percentage"
-                    value={formik.percentage}
-                    onChange={formik.handleChange}
-                    className={classes.select_box}
-                  >
-                    <option value="">Percentage</option>
-                    <option value={5}> 5%</option>
-                    <option value={10}>10%</option>
-                    <option value={15}>15%</option>
-                    <option value={20}>20%</option>
-                    <option value={25}>25%</option>
-                  </select>
-                  <br />
-                  {formik.errors.percentage ? (
-                    <div style={{ color: "red", fontSize: "12px" }}>
-                      {formik.errors.percentage}
+                      {formik.errors.userid}
                     </div>
                   ) : null}
                   <br />
 
-                  {/* <ReusableInput
-                    placeholder="Percentage"
-                    type="percentage"
-                    name="percentage"
-                    id="percentage"
-                    value={formik.percentage}
-                    onChange={formik.handleChange}
-                  />
-                  <br />
-                  {formik.errors.percentage ? (
-                    <div style={{ color: "red", fontSize: "12px" }}>
-                      {formik.errors.percentage}
-                    </div>
-                  ) : null}
-                  <br /> */}
                   <select
-                    name="minimumdeposit"
-                    id="minimumdeposit"
-                    value={formik.minimumdeposit}
+                    name="planid"
+                    id="planid"
+                    value={formik.planid}
                     onChange={formik.handleChange}
                     className={classes.select_box}
                   >
-                    <option value="">Minimum Deposit</option>
-                    <option value={10000}> 10,000</option>
-                    <option value={25000}>25,000</option>
-                    <option value={50000}>50,000</option>
-                    <option value={75000}>75,000</option>
-                    <option value={100000}>1,00,000</option>
+                    {planids?.map((ids, i) => (
+                      <option value={ids._id}>{ids.name}</option>
+                    ))}
                   </select>
                   <br />
-                  {formik.errors.minimumdeposit ? (
+                  {formik.errors.planid ? (
                     <div style={{ color: "red", fontSize: "12px" }}>
-                      {formik.errors.minimumdeposit}
+                      {formik.errors.planid}
                     </div>
                   ) : null}
                   <br />
-                  {/* <ReusableInput
-                    placeholder="Minimum Deposit"
-                    type="minimumdeposit"
-                    name="minimumdeposit"
-                    id="minimumdeposit"
-                    value={formik.minimumdeposit}
+
+                  <select
+                    name="vehicleid"
+                    id="vehicleid"
+                    value={formik.vehicleid}
+                    onChange={formik.handleChange}
+                    className={classes.select_box}
+                  >
+                    {vehicleids?.map((ids, i) => (
+                      <option value={ids._id}>{ids.name}</option>
+                    ))}
+                  </select>
+                  <br />
+                  {formik.errors.vehicleid ? (
+                    <div style={{ color: "red", fontSize: "12px" }}>
+                      {formik.errors.vehicleid}
+                    </div>
+                  ) : null}
+                  <br />
+
+                  <ReusableInput
+                    placeholder="Deposit Amount"
+                    type="text"
+                    name="deposit"
+                    id="deposit"
+                    value={formik.deposit}
                     onChange={formik.handleChange}
                   />
                   <br />
-                  {formik.errors.minimumdeposit ? (
+                  {formik.errors.deposit ? (
                     <div style={{ color: "red", fontSize: "12px" }}>
-                      {formik.errors.minimumdeposit}
+                      {formik.errors.deposit}
                     </div>
-                  ) : null} */}
+                  ) : null}
                   <br />
+
                   <ResuasbleButton type="submit" style={{ fontWeight: 500 }}>
-                    Create Plan
+                    Create Deposit Plan
                   </ResuasbleButton>
                 </form>
               </Grid>
@@ -229,7 +184,7 @@ function PlanCreate() {
   );
 }
 
-export default PlanCreate;
+export default Deposit;
 
 const useStyles = makeStyles({
   reg_div: {
@@ -241,8 +196,8 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    top: "50% !important",
-    transform: "translate(0, 30%)",
+    // top: "50% !important",
+    transform: "translate(0, 6%)",
   },
   reg_form_color: {
     backgroundColor: "white",
@@ -407,12 +362,3 @@ const useStyles = makeStyles({
     // },
   },
 });
-
-// ***************************************************************************
-// {
-//   "name": "Hero",
-//   "category": "Small Cap",
-//   "duration": 24,
-//   "percentage": 10,
-//   "minimumdeposit": 50000
-//   }

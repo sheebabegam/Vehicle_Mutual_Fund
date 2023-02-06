@@ -20,6 +20,7 @@ import { makeStyles } from "@mui/styles";
 import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
 import SidebarTitles from "../assests/JSON/SidebarTitles";
 import VehicleCreate from "./admin/VehicleCreate";
+import Deposit from "./admin/Deposit";
 
 function Home() {
   const navigate = useNavigate();
@@ -138,6 +139,26 @@ function Home() {
               <div>
                 <h1 className={classes.admin_error_text}>
                   Please Login as Admin
+                </h1>
+                <img
+                  src="https://www.fixrunner.com/wp-content/uploads/2017/05/Cannot-Login-to-WordPress-Admin-Areatw.png"
+                  alt=""
+                />
+              </div>
+            </div>
+          )
+        ) : (
+          ""
+        )}
+
+        {userPlan === "Deposit Form" ? (
+          user.role === "user" ? (
+            userPlan === "Deposit Form" && <Deposit />
+          ) : (
+            <div className={classes.flex_div_admin_login}>
+              <div>
+                <h1 className={classes.admin_error_text}>
+                  Please Login as <u>User</u>
                 </h1>
                 <img
                   src="https://www.fixrunner.com/wp-content/uploads/2017/05/Cannot-Login-to-WordPress-Admin-Areatw.png"

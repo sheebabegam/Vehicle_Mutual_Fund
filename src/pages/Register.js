@@ -60,7 +60,8 @@ function Register() {
     onSubmit: (data) => {
       console.log(data);
       axios
-        .post("http://localhost:5000/api/auth/register", data)
+        // .post("http://localhost:5000/api/auth/register", data)
+        .post("http://192.168.7.49:3500/api/auth/register", data)
         .then((res) => {
           toast.success("User register successfully!");
           navigate("/login");

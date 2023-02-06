@@ -99,11 +99,11 @@ const SidebarTitles = [
       },
       {
         id: 32,
-        sub_name: "Charts",
+        sub_name: "User Forms",
         items: [
           {
             id: 321,
-            item_name: "Chart 1",
+            item_name: "Deposit Form",
           },
           {
             id: 322,

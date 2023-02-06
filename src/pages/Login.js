@@ -52,7 +52,8 @@ function Login() {
     onSubmit: (data) => {
       console.log(data);
       axios
-        .post("http://localhost:5000/api/auth/login", data)
+        // .post("http://localhost:5000/api/auth/login", data)
+        .post("http://192.168.7.49:3500/api/auth/login", data)
         .then((res) => {
           console.log(res); // Here we get the token in data
           localStorage.setItem("auth", JSON.stringify(res.data));
